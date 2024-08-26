@@ -12,8 +12,4 @@ public class InsurancePredictApplication {
     public static void main(String[] args) {
         SpringApplication.run(InsurancePredictApplication.class, args);
     }
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 }
