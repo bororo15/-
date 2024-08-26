@@ -26,4 +26,7 @@ public class InsuranceService {
 
         return prediction;
     }
+    public Insurance getInsuranceById(Long id) {
+        return insuranceMapper.selectInsuranceById(id);
+    }
 }
