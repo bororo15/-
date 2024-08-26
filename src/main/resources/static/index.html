@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보험료 예측 서비스</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>보험료 예측 서비스</h1>
+    <form id="predictionForm">
+        <label for="age">나이:</label>
+        <input type="number" id="age" name="age" required><br><br>
+
+        <label for="bmi">BMI:</label>
+        <input type="number" id="bmi" name="bmi" step="0.01" required><br><br>
+
+        <label for="children">자녀 수:</label>
+        <input type="number" id="children" name="children" required><br><br>
+
+        <label>성별:</label>
+        <input type="radio" id="male" name="sex" value="male" required>
+        <label for="male">남성</label>
+        <input type="radio" id="female" name="sex" value="female" required>
+        <label for="female">여성</label><br><br>
+
+        <label>흡연 여부:</label>
+        <input type="radio" id="smoker_yes" name="smoker" value="yes" required>
+        <label for="smoker_yes">예</label>
+        <input type="radio" id="smoker_no" name="smoker" value="no" required>
+        <label for="smoker_no">아니오</label><br><br>
+
+        <label for="region">지역:</label>
+        <select id="region" name="region" required>
+            <option value="southeast">남동부</option>
+            <option value="southwest">남서부</option>
+            <option value="northeast">북동부</option>
+            <option value="northwest">북서부</option>
+        </select><br><br>
+
+        <button type="submit">예측하기</button>
+    </form>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $("#predictionForm").submit(function(event) {
+            event.preventDefault();
+            var formData = {
+                age: $("#age").val(),
+                bmi: $("#bmi").val(),
+                children: $("#children").val(),
+                sex: $("input[name='sex']:checked").val(),
+                smoker: $("input[name='smoker']:checked").val(),
+                region: $("#region").val()
+            };
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/api/insurance/predict",
+                data: JSON.stringify(formData),
+                dataType: 'json',
+                success: function(result) {
+                    $("#result").html("예측된 보험료: " + result.toFixed(2) + " 원");
+                },
+                error: function(e) {
+                    $("#result").html("오류 발생: " + e.responseText);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
