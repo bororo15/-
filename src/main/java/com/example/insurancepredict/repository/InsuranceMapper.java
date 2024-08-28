@@ -8,3 +8,4 @@ public interface InsuranceMapper {
     void insertPrediction(Insurance insurance);
     Insurance selectInsuranceById(Long id);
 }
+
