@@ -1,28 +1,29 @@
 package com.example.insurancepredict.controller;
 
+import com.example.insurancepredict.dto.InsurancePredictionRequestDto;
+import com.example.insurancepredict.dto.InsuranceResponseDto;
 import com.example.insurancepredict.exception.BadRequestException;
 import com.example.insurancepredict.exception.ResourceNotFoundException;
 import com.example.insurancepredict.exception.InternalServerException;
-import com.example.insurancepredict.model.Insurance;
 import com.example.insurancepredict.service.InsuranceService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/insurance")
+@RequiredArgsConstructor
 public class InsuranceController {
 
-    @Autowired
-    private InsuranceService insuranceService;
+    private final InsuranceService insuranceService;
 
     @PostMapping("/predict")
-    public ResponseEntity<Float> predictInsurance(@RequestBody Insurance insurance) {
-        if (insurance.getAge() < 0) {
+    public ResponseEntity<Float> predictInsurance(@RequestBody InsurancePredictionRequestDto requestDto) {
+        if (requestDto.getAge() < 0) {
             throw new BadRequestException("Age cannot be negative");
         }
         try {
-            float prediction = insuranceService.predictInsurance(insurance);
+            float prediction = insuranceService.predictInsurance(requestDto);
             return ResponseEntity.ok(prediction);
         } catch (Exception e) {
             throw new InternalServerException("Error occurred while predicting insurance");
@@ -30,8 +31,8 @@ public class InsuranceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Insurance> getInsurance(@PathVariable Long id) {
-        Insurance insurance = insuranceService.getInsuranceById(id);
+    public ResponseEntity<InsuranceResponseDto> getInsurance(@PathVariable Long id) {
+        InsuranceResponseDto insurance = insuranceService.getInsuranceById(id);
         if (insurance == null) {
             throw new ResourceNotFoundException("Insurance not found with id: " + id);
         }
