@@ -7,6 +7,8 @@ import com.example.insurancepredict.exception.ResourceNotFoundException;
 import com.example.insurancepredict.exception.InternalServerException;
 import com.example.insurancepredict.service.InsuranceService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 public class InsuranceController {
 
     private final InsuranceService insuranceService;
+    private static final Logger logger = LoggerFactory.getLogger(InsuranceController.class);
+
 
     @PostMapping("/predict")
     public ResponseEntity<Float> predictInsurance(@RequestBody InsurancePredictionRequestDto requestDto) {
@@ -26,8 +30,15 @@ public class InsuranceController {
             float prediction = insuranceService.predictInsurance(requestDto);
             return ResponseEntity.ok(prediction);
         } catch (Exception e) {
+            logger.error("Error occurred while predicting insurance", e);
             throw new InternalServerException("Error occurred while predicting insurance");
+            // throw new InternalServerException("Error occurred while predicting insurance");
         }
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<String> home() {
+        return ResponseEntity.ok("Welcome to Insurance Prediction API");
     }
 
     @GetMapping("/{id}")
@@ -61,18 +72,8 @@ public class InsuranceController {
         return ResponseEntity.ok("Valid age: " + age);
     }
 
-//test 404
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Insurance> getInsuranceById(@PathVariable Long id) {
-//        Insurance insurance = insuranceService.getInsuranceById(id);
-//        if (insurance == null) {
-//            throw new ResourceNotFoundException("Insurance not found with id: " + id);
-//        }
-//        return ResponseEntity.ok(insurance);
-//    }
-
     @GetMapping("/test-500")
     public ResponseEntity<String> test500() {
-        throw new RuntimeException("Simulated internal server error");
+        throw new InternalServerException("Simulated internal server error");
     }
 }
