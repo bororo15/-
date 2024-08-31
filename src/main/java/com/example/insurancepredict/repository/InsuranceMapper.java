@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface InsuranceMapper {
     void insertPrediction(Insurance insurance);
     Insurance selectInsuranceById(Long id);
+    Insurance findUserByAccessToken(String accessToken);  // 추가된 메서드
 }
-

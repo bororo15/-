@@ -31,7 +31,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InternalServerException.class)
     public ResponseEntity<Object> handleInternalServerException(InternalServerException ex) {
         Map<String, Object> body = new HashMap<>();
-        body.put("message", "An internal server error occurred");
+        ex.printStackTrace();
+        body.put("message", ex.getMessage());
         body.put("error", "Internal Server Error");
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }

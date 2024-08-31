@@ -11,5 +11,18 @@
         SELECT * FROM predictions WHERE id = #{id}
     </select>
 
-</mapper>
+    <select id="findUserByAccessToken" parameterType="string" resultType="com.example.insurancepredict.model.Insurance">
+        SELECT
+            registered_client_id as registeredClientId,
+            principal_name as principalName,
+            access_token_value as accessTokenValue,
+            access_token_issued_at as accessTokenIssuedAt,
+            access_token_expires_at as AccessTokenExpiresAt,
+            <![CDATA[(access_token_expires_at < now()) as is_expired]]>
+        FROM
+            insuranceOAuth.oauth2_authorization
+        WHERE
+            access_token_value = #{accessToken}
+    </select>
 
+</mapper>

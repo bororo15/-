@@ -1,17 +1,60 @@
 package com.example.insurancepredict.model;
 
-import lombok.Data;
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
 public class Insurance {
+    @Getter @Setter
     private Long id;
+
+    @Getter @Setter
     private int age;
-    private float bmi;
+
+    @Getter @Setter
+    private double bmi;
+
+    @Getter @Setter
     private int children;
+
+    @Getter @Setter
     private String sex;
-    private String smoker;
+
+    @Getter @Setter
+    private boolean smoker;
+
+    @Getter @Setter
     private String region;
-    private float predictedCharge;
-    private LocalDateTime predictionDate;
+
+    @Getter @Setter
+    private double predictedCharge;
+
+    @Getter @Setter
+    private boolean expired;
+
+    @Getter @Setter
+    private String principalName;
+
+    @Getter @Setter
+    private String registeredClientId;
+
+    public Insurance(int age, double bmi, int children, String sex, boolean smoker, String region) {
+        this.age = age;
+        this.bmi = bmi;
+        this.children = children;
+        this.sex = sex;
+        this.smoker = smoker;
+        this.region = region;
+    }
+
+    public Insurance() {
+    }
+
+    public void setPredictedCharge(double predictedCharge) {
+        this.predictedCharge = predictedCharge;
+    }
+
+
+    public boolean getSmoker() {
+        return smoker;
+    }
 }

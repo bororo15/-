@@ -37,7 +37,7 @@ public class InsuranceService {
         insurance.setBmi(requestDto.getBmi());
         insurance.setChildren(requestDto.getChildren());
         insurance.setSex(requestDto.getSex());
-        insurance.setSmoker(requestDto.getSmoker());
+        insurance.setSmoker(Boolean.parseBoolean(requestDto.getSmoker()));
         insurance.setRegion(requestDto.getRegion());
         return insurance;
     }
@@ -45,12 +45,12 @@ public class InsuranceService {
         InsuranceResponseDto responseDto = new InsuranceResponseDto();
         responseDto.setId(insurance.getId());
         responseDto.setAge(insurance.getAge());
-        responseDto.setBmi(insurance.getBmi());
+        responseDto.setBmi((float) insurance.getBmi());
         responseDto.setChildren(insurance.getChildren());
         responseDto.setSex(insurance.getSex());
-        responseDto.setSmoker(insurance.getSmoker());
+        responseDto.setSmoker(String.valueOf(insurance.getSmoker()));
         responseDto.setRegion(insurance.getRegion());
-        responseDto.setPredictedCharge(insurance.getPredictedCharge());
+        responseDto.setPredictedCharge((float) insurance.getPredictedCharge());
         return responseDto;
     }
 }
